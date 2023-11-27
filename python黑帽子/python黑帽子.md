@@ -145,3 +145,30 @@
          print(f"命令执行失败：{e}")
 
       ```
+   - argparse 模块是 Python 标准库中用于解析命令行参数的模块。它提供了一种简单而灵活的方法来处理命令行参数，并生成帮助信息。
+      ```py {.line-numbers}
+      import argparse
+
+      parser = argparse.ArgumentParser(description='命令行参数示例')
+
+      # 添加位置参数
+      parser.add_argument('input_file', help='输入文件的路径')
+
+      # 添加可选参数
+      parser.add_argument('-o', '--output_file', help='输出文件的路径', default='output.txt')
+
+      # 解析命令行参数
+      args = parser.parse_args()
+
+      # 访问解析后的参数
+      input_file = args.input_file
+      output_file = args.output_file
+
+      print(f'输入文件路径: {input_file}')
+      print(f'输出文件路径: {output_file}')
+
+      # 输入：python .\socket_test.py input.txt -o output.txt
+      # 输出：
+      # 输入文件路径: input.txt
+      # 输出文件路径: output.txt
+      ```
