@@ -53,6 +53,7 @@ import sys
 # tl = (1,2,[30,40])
 # print(hash(tl))
 
+#字典推导
 DIAL_CODES = [
     (86,'China'),
     (91,'India'),
