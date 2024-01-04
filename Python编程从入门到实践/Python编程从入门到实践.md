@@ -8,6 +8,10 @@
   - [组织列表](#组织列表)
   - [数值列表](#数值列表)
   - [切片](#切片)
+- [元组](#元组)
+- [if语句](#if语句)
+- [字典](#字典)
+  - [遍历字典](#遍历字典)
 
 <!-- /code_chunk_output -->
 
@@ -135,3 +139,103 @@ friend_foods.append('ice cream')
 print(my_foods)
 print(friend_foods)
 ```
+
+## 元组
+不可变的列表
+```py {.line-numbers}
+dimensions = (200, 50) 
+print(dimensions[0]) 
+print(dimensions[1])
+for dimension in dimensions: 
+ print(dimension)
+```
+
+## if语句
+```py {.line-numbers}
+# 检查特定值是否包含在列表中
+requested_toppings = ['mushrooms', 'onions', 'pineapple'] 
+if 'mushrooms' in requested_toppings:
+    print('mushrooms')
+if 'pepperoni' in requested_toppings:
+    print('pepperoni')
+    
+# 检查特定值是否不包含在列表中
+banned_users = ['andrew', 'carolina', 'david'] 
+user = 'marie' 
+if user not in banned_users: 
+ print(user.title() + ", you can post a response if you wish.") 
+```
+
+## 字典
+一系列键值对
+```py {.line-numbers}
+alien_0 = {'color': 'green', 'points': 5} 
+new_points = alien_0['points'] 
+print("You just earned " + str(new_points) + " points!")
+
+# 添加键值对
+print(alien_0) 
+alien_0['x_position'] = 0 
+alien_0['y_position'] = 25 
+print(alien_0) 
+
+# 修改键值对
+alien_0 = {'color': 'green'} 
+print("The alien is " + alien_0['color'] + ".") 
+alien_0['color'] = 'yellow' 
+print("The alien is now " + alien_0['color'] + ".")
+
+# 删除键值对
+alien_0 = {'color': 'green', 'points': 5} 
+print(alien_0) 
+del alien_0['points'] 
+print(alien_0) 
+```
+
+### 遍历字典
+- items()
+返回一个键值对列表
+
+遍历字典时，键值对的返回顺序也与存储顺序不同
+```py {.line-numbers}
+# 遍历键值对
+user_0 = { 
+ 'username': 'efermi', 
+ 'first': 'enrico', 
+ 'last': 'fermi', 
+ } 
+for key, value in user_0.items(): 
+    print("\nKey: " + key) 
+    print("Value: " + value)
+```
+- keys()
+返回一个键列表
+
+遍历字典时，会默认遍历所有的键
+```py {.line-numbers}
+# 遍历所有键
+favorite_languages = { 
+ 'jen': 'python', 
+ 'sarah': 'c', 
+ 'edward': 'ruby', 
+ 'phil': 'python', 
+ }
+for name in favorite_languages.keys(): 
+ print(name.title())
+# 等同于
+for name in favorite_languages: 
+ print(name.title())
+```
+方法keys()并非只能用于遍历；实际上，它返回一个列表，其中包含字典中的所有键
+```py {.line-numbers}
+favorite_languages = { 
+ 'jen': 'python', 
+ 'sarah': 'c', 
+ 'edward': 'ruby', 
+ 'phil': 'python', 
+ } 
+if 'erin' not in favorite_languages.keys():
+ print("Erin, please take our poll!") 
+```
+- values()
+返回一个值列表
