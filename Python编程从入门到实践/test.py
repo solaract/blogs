@@ -130,58 +130,62 @@
 # del alien_0['points'] 
 # print(alien_0) 
 
-# 遍历键值对
-# 遍历字典时，键—值对的返回顺序也与存储顺序不同
-user_0 = { 
- 'username': 'efermi', 
- 'first': 'enrico', 
- 'last': 'fermi', 
- } 
-for key, value in user_0.items(): 
-    print("\nKey: " + key) 
-    print("Value: " + value)
+# # 遍历键值对
+# # 遍历字典时，键—值对的返回顺序也与存储顺序不同
+# user_0 = { 
+#  'username': 'efermi', 
+#  'first': 'enrico', 
+#  'last': 'fermi', 
+#  } 
+# for key, value in user_0.items(): 
+#     print("\nKey: " + key) 
+#     print("Value: " + value)
 
-# 遍历所有键
-favorite_languages = { 
- 'jen': 'python', 
- 'sarah': 'c', 
- 'edward': 'ruby', 
- 'phil': 'python', 
- }
-for name in favorite_languages.keys(): 
- print(name.title())
-# 遍历字典时，会默认遍历所有的键
-# 因此等同于
-for name in favorite_languages: 
- print(name.title())
+# # 遍历所有键
+# favorite_languages = { 
+#  'jen': 'python', 
+#  'sarah': 'c', 
+#  'edward': 'ruby', 
+#  'phil': 'python', 
+#  }
+# for name in favorite_languages.keys(): 
+#  print(name.title())
+# # 遍历字典时，会默认遍历所有的键
+# # 因此等同于
+# for name in favorite_languages: 
+#  print(name.title())
 
-favorite_languages = { 
- 'jen': 'python', 
- 'sarah': 'c', 
- 'edward': 'ruby', 
- 'phil': 'python', 
- } 
-if 'erin' not in favorite_languages.keys():
- print("Erin, please take our poll!") 
+# favorite_languages = { 
+#  'jen': 'python', 
+#  'sarah': 'c', 
+#  'edward': 'ruby', 
+#  'phil': 'python', 
+#  } 
+# if 'erin' not in favorite_languages.keys():
+#  print("Erin, please take our poll!") 
 
-# 遍历所有值
- favorite_languages = { 
- 'jen': 'python', 
- 'sarah': 'c', 
- 'edward': 'ruby', 
- 'phil': 'python', 
- } 
-print("The following languages have been mentioned:") 
-for language in favorite_languages.values(): 
- print(language.title()) 
+# # 遍历所有值
+#  favorite_languages = { 
+#  'jen': 'python', 
+#  'sarah': 'c', 
+#  'edward': 'ruby', 
+#  'phil': 'python', 
+#  } 
+# print("The following languages have been mentioned:") 
+# for language in favorite_languages.values(): 
+#  print(language.title()) 
 
-# 剔除重复项
- favorite_languages = { 
- 'jen': 'python', 
- 'sarah': 'c', 
- 'edward': 'ruby', 
- 'phil': 'python', 
- } 
-print("The following languages have been mentioned:") 
-for language in set(favorite_languages.values()): 
- print(language.title())
+# # 剔除重复项
+#  favorite_languages = { 
+#  'jen': 'python', 
+#  'sarah': 'c', 
+#  'edward': 'ruby', 
+#  'phil': 'python', 
+#  } 
+# print("The following languages have been mentioned:") 
+# for language in set(favorite_languages.values()): 
+#  print(language.title())
+
+# 输入
+message = input("Tell me something, and I will repeat it back to you: ") 
+print(message) 

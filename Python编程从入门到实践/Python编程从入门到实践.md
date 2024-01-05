@@ -12,6 +12,7 @@
 - [if语句](#if语句)
 - [字典](#字典)
   - [遍历字典](#遍历字典)
+- [用户输入](#用户输入)
 
 <!-- /code_chunk_output -->
 
@@ -194,48 +195,77 @@ print(alien_0)
 
 ### 遍历字典
 - items()
-返回一个键值对列表
+  返回一个键值对列表
 
-遍历字典时，键值对的返回顺序也与存储顺序不同
-```py {.line-numbers}
-# 遍历键值对
-user_0 = { 
- 'username': 'efermi', 
- 'first': 'enrico', 
- 'last': 'fermi', 
- } 
-for key, value in user_0.items(): 
-    print("\nKey: " + key) 
-    print("Value: " + value)
-```
+  遍历字典时，键值对的返回顺序也与存储顺序不同
+  ```py {.line-numbers}
+  # 遍历键值对
+  user_0 = { 
+  'username': 'efermi', 
+  'first': 'enrico', 
+  'last': 'fermi', 
+  } 
+  for key, value in user_0.items(): 
+      print("\nKey: " + key) 
+      print("Value: " + value)
+  ```
 - keys()
-返回一个键列表
+  返回一个键列表
 
-遍历字典时，会默认遍历所有的键
-```py {.line-numbers}
-# 遍历所有键
-favorite_languages = { 
- 'jen': 'python', 
- 'sarah': 'c', 
- 'edward': 'ruby', 
- 'phil': 'python', 
- }
-for name in favorite_languages.keys(): 
- print(name.title())
-# 等同于
-for name in favorite_languages: 
- print(name.title())
-```
-方法keys()并非只能用于遍历；实际上，它返回一个列表，其中包含字典中的所有键
-```py {.line-numbers}
-favorite_languages = { 
- 'jen': 'python', 
- 'sarah': 'c', 
- 'edward': 'ruby', 
- 'phil': 'python', 
- } 
-if 'erin' not in favorite_languages.keys():
- print("Erin, please take our poll!") 
-```
+  遍历字典时，会默认遍历所有的键
+  ```py {.line-numbers}
+  # 遍历所有键
+  favorite_languages = { 
+  'jen': 'python', 
+  'sarah': 'c', 
+  'edward': 'ruby', 
+  'phil': 'python', 
+  }
+  for name in favorite_languages.keys(): 
+  print(name.title())
+  # 等同于
+  for name in favorite_languages: 
+  print(name.title())
+  ```
+  方法keys()并非只能用于遍历；实际上，它返回一个列表，其中包含字典中的所有键
+  ```py {.line-numbers}
+  favorite_languages = { 
+  'jen': 'python', 
+  'sarah': 'c', 
+  'edward': 'ruby', 
+  'phil': 'python', 
+  } 
+  if 'erin' not in favorite_languages.keys():
+  print("Erin, please take our poll!") 
+  ```
 - values()
-返回一个值列表
+  返回一个值列表
+  ```py {.line-numbers}
+  # 遍历所有值
+  favorite_languages = { 
+  'jen': 'python', 
+  'sarah': 'c', 
+  'edward': 'ruby', 
+  'phil': 'python', 
+  } 
+  print("The following languages have been mentioned:") 
+  for language in favorite_languages.values(): 
+  print(language.title()) 
+  ```
+  创建集合set剔除重复元素
+  ```py {.line-numbers}
+  # 剔除重复项
+  favorite_languages = { 
+  'jen': 'python', 
+  'sarah': 'c', 
+  'edward': 'ruby', 
+  'phil': 'python', 
+  } 
+  print("The following languages have been mentioned:") 
+  for language in set(favorite_languages.values()): 
+  print(language.title())
+  ```
+
+## 用户输入
+- input()
+让程序暂停运行，等待用户输入一些文本  
