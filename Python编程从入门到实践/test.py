@@ -186,6 +186,64 @@
 # for language in set(favorite_languages.values()): 
 #  print(language.title())
 
-# 输入
-message = input("Tell me something, and I will repeat it back to you: ") 
-print(message) 
+# # 输入
+# message = input("Tell me something, and I will repeat it back to you: ") 
+# print(message) 
+
+# height = input("How tall are you, in inches? ") 
+# height = int(height) 
+# if height >= 36: 
+#  print("\nYou're tall enough to ride!") 
+# else:
+#  print("\nYou'll be able to ride when you're a little older.") 
+
+# # 函数
+# # 指定形参默认值
+# def describe_pet(pet_name, animal_type='dog'): 
+#  """显示宠物的信息""" 
+#  print("\nI have a " + animal_type + ".") 
+#  print("My " + animal_type + "'s name is " + pet_name.title() + ".") 
+
+# # 一条名为Willie的小狗
+# # 省略默认值
+# describe_pet('willie') 
+# describe_pet(pet_name='willie') 
+
+# # 一只名为Harry的仓鼠
+# # 位置实参
+# describe_pet('harry', 'hamster') 
+# # 关键字实参
+# describe_pet(pet_name='harry', animal_type='hamster') 
+# describe_pet(animal_type='hamster', pet_name='harry') 
+
+# def make_pizza(*toppings): 
+#  """概述要制作的比萨""" 
+#  print("\nMaking a pizza with the following toppings:") 
+#  for topping in toppings: 
+#     print("- " + topping) 
+ 
+# make_pizza('pepperoni') 
+# make_pizza('mushrooms', 'green peppers', 'extra cheese')
+
+# def make_pizza(size, *toppings): 
+#  """概述要制作的比萨""" 
+#  print("\nMaking a " + str(size) + 
+#  "-inch pizza with the following toppings:") 
+#  for topping in toppings: 
+#     print("- " + topping) 
+ 
+# make_pizza(16, 'pepperoni') 
+# make_pizza(12, 'mushrooms', 'green peppers', 'extra cheese') 
+
+# def build_profile(first, last, **user_info): 
+#     """创建一个字典，其中包含我们知道的有关用户的一切""" 
+#     profile = {} 
+#     profile['first_name'] = first 
+#     profile['last_name'] = last 
+#     for key, value in user_info.items():
+#         profile[key] = value 
+#     return profile 
+# user_profile = build_profile('albert', 'einstein', 
+#     location='princeton', 
+#     field='physics') 
+# print(user_profile) 
