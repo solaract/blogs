@@ -17,6 +17,8 @@
   - [传递任意数量的实参](#传递任意数量的实参)
 - [导入函数模块](#导入函数模块)
   - [as指定别名](#as指定别名)
+- [类](#类)
+  - [修改实例属性值](#修改实例属性值)
 
 <!-- /code_chunk_output -->
 
@@ -411,3 +413,87 @@ def make_pizza(size, *toppings):
   p.make_pizza(12, 'mushrooms', 'green peppers', 'extra cheese') 
   ```
 
+## 类
+类中的函数称为方法，变量称为属性
+```py {.line-numbers}
+class Dog(): 
+    """一次模拟小狗的简单尝试""" 
+
+    def __init__(self, name, age): 
+        """初始化属性name和age""" 
+        self.name = name 
+        self.age = age 
+
+    def sit(self): 
+        """模拟小狗被命令时蹲下""" 
+        print(self.name.title() + " is now sitting.") 
+    def roll_over(self): 
+        """模拟小狗被命令时打滚""" 
+        print(self.name.title() + " rolled over!") 
+
+my_dog = Dog('willie', 6) 
+your_dog = Dog('lucy', 3) 
+print("My dog's name is " + my_dog.name.title() + ".") 
+print("My dog is " + str(my_dog.age) + " years old.") 
+my_dog.sit() 
+print("\nYour dog's name is " + your_dog.name.title() + ".") 
+print("Your dog is " + str(your_dog.age) + " years old.") 
+your_dog.sit()
+```
+- \_\_init__()
+  \_\_init__()是一个特殊的方法，每次根据类创建新实例时，Python都会自动运行它
+  方法\_\_init__()并未显式地包含return语句，但每次调用时Python自动返回一个新实例
+- self
+  每个与类相关联的方法调用都自动传递实参self，它是一个指向实例本身的引用，让实例能够访问类中的属性和方法
+  每当我们根据Dog类创建实例时，都只需给最后两个形参（name和age）提供值
+
+通常可以认为首字母大写的名称（如Dog）指的是类，而小写的名称（如my_dog）指的是根据类创建的实例
+
+### 修改实例属性值
+1. 指定属性默认值
+   类中的每个属性都必须有初始值，哪怕这个值是0或空字符串
+2. 直接修改属性值
+3. 通过方法修改属性值
+```py {.line-numbers}
+class Car(): 
+    """一次模拟汽车的简单尝试""" 
+    def __init__(self, make, model, year): 
+        """初始化描述汽车的属性""" 
+        self.make = make 
+        self.model = model 
+        self.year = year 
+        # 指定属性默认值
+        self.odometer_reading = 0
+    
+    def get_descriptive_name(self): 
+        """返回整洁的描述性信息""" 
+        long_name = str(self.year) + ' ' + self.make + ' ' + self.model 
+        return long_name.title() 
+    def read_odometer(self): 
+        """打印一条指出汽车里程的消息""" 
+        print("This car has " + str(self.odometer_reading) + " miles on it.")
+    def update_odometer(self, mileage): 
+        """ 
+        将里程表读数设置为指定的值
+        禁止将里程表读数往回调
+        """ 
+        if mileage >= self.odometer_reading: 
+            self.odometer_reading = mileage 
+        else: 
+            print("You can't roll back an odometer!") 
+    def increment_odometer(self, miles): 
+        """将里程表读数增加指定的量""" 
+        self.odometer_reading += miles
+
+
+my_new_car = Car('audi', 'a4', 2016) 
+print(my_new_car.get_descriptive_name()) 
+# 直接修改属性值
+my_new_car.odometer_reading = 23
+my_new_car.read_odometer() 
+# 通过方法修改属性值
+my_new_car.update_odometer(23500) 
+my_new_car.read_odometer() 
+my_new_car.increment_odometer(100) 
+my_new_car.read_odometer() 
+```
