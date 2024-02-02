@@ -15,10 +15,15 @@
 - [用户输入](#用户输入)
 - [函数](#函数)
   - [传递任意数量的实参](#传递任意数量的实参)
-- [导入函数模块](#导入函数模块)
+  - [导入函数模块](#导入函数模块)
   - [as指定别名](#as指定别名)
 - [类](#类)
   - [修改实例属性值](#修改实例属性值)
+  - [继承](#继承)
+  - [导入类模块](#导入类模块)
+  - [类编码风格](#类编码风格)
+- [文件和异常](#文件和异常)
+  - [读取文件](#读取文件)
 
 <!-- /code_chunk_output -->
 
@@ -351,7 +356,7 @@ user_profile = build_profile('albert', 'einstein',
 print(user_profile) 
 ```
 
-## 导入函数模块
+### 导入函数模块
 模块pizza.py文件：
 ```py {.line-numbers}
 def make_pizza(size, *toppings): 
@@ -497,3 +502,235 @@ my_new_car.read_odometer()
 my_new_car.increment_odometer(100) 
 my_new_car.read_odometer() 
 ```
+
+### 继承
+一个类继承另一个类时，它将自动获得另一个类的所有属性和方法；原有的类称为**父类**，而新类称为**子类**。子类继承了其父类的所有属性和方法，同时还可以定义自己的属性和方法。对不符合子类模拟的实物的方法可以进行重写，可在子类中定义一个这样的方法，即它与要重写的父类方法同名
+> 创建子类时，父类必须包含在当前文件中，且位于子类前面。定义子类时，必须在括号内指定父类的名称
+```py {.line-numbers}
+class ElectricCar(Car): 
+    """电动汽车的独特之处""" 
+    def __init__(self, make, model, year): 
+        """初始化父类的属性，再初始化电动汽车特有的属性""" 
+        super().__init__(make, model, year) 
+        self.battery_size = 70
+    def describe_battery(self): 
+        """打印一条描述电瓶容量的消息""" 
+        print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+    
+my_tesla = ElectricCar('tesla', 'model s', 2016) 
+print(my_tesla.get_descriptive_name()) 
+```
+- super()
+super()是一个特殊函数，将父类和子类关联起来。这行代码让Python调用
+ElectricCar的父类的方法__init__()，让ElectricCar实例包含父类的所有属性。父类也称为超类（superclass），名称super因此而得名
+
+#### 将实例作为属性
+可以要将类的一部分作为一个独立的类提取出来，将大型类拆分成多个协同工作的小类
+```py {.line-numbers}
+class Battery(): 
+    """一次模拟电动汽车电瓶的简单尝试""" 
+    
+    def __init__(self, battery_size=70): 
+        """初始化电瓶的属性""" 
+        self.battery_size = battery_size 
+    def describe_battery(self): 
+        """打印一条描述电瓶容量的消息""" 
+        print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+
+class ElectricCar(Car): 
+    """电动汽车的独特之处""" 
+    def __init__(self, make, model, year): 
+        """初始化父类的属性""" 
+        super().__init__(make, model, year) 
+        # self.battery_size = 70
+        self.battery = Battery()
+    def describe_battery(self): 
+        """打印一条描述电瓶容量的消息""" 
+        print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+
+my_tesla = ElectricCar('tesla', 'model s', 2016) 
+print(my_tesla.get_descriptive_name()) 
+# my_tesla.describe_battery() 
+my_tesla.battery.describe_battery()
+```
+
+### 导入类模块
+模块car.py文件：
+```py {.line-numbers}
+class Car(): 
+    """一次模拟汽车的简单尝试""" 
+    def __init__(self, make, model, year): 
+        """初始化描述汽车的属性""" 
+        self.make = make 
+        self.model = model 
+        self.year = year 
+        self.odometer_reading = 0
+    
+    def get_descriptive_name(self): 
+        """返回整洁的描述性信息""" 
+        long_name = str(self.year) + ' ' + self.make + ' ' + self.model 
+        return long_name.title() 
+    def read_odometer(self): 
+        """打印一条指出汽车里程的消息""" 
+        print("This car has " + str(self.odometer_reading) + " miles on it.")
+    def update_odometer(self, mileage): 
+        """ 
+        将里程表读数设置为指定的值
+        禁止将里程表读数往回调
+        """ 
+        if mileage >= self.odometer_reading: 
+            self.odometer_reading = mileage 
+        else: 
+            print("You can't roll back an odometer!") 
+    def increment_odometer(self, miles): 
+        """将里程表读数增加指定的量""" 
+        self.odometer_reading += miles
+
+class Battery(): 
+    """一次模拟电动汽车电瓶的简单尝试""" 
+    
+    def __init__(self, battery_size=70): 
+        """初始化电瓶的属性""" 
+        self.battery_size = battery_size 
+    def describe_battery(self): 
+        """打印一条描述电瓶容量的消息""" 
+        print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+
+class ElectricCar(Car): 
+    """电动汽车的独特之处""" 
+    def __init__(self, make, model, year): 
+        """初始化父类的属性""" 
+        super().__init__(make, model, year) 
+        # self.battery_size = 70
+        self.battery = Battery()
+    def describe_battery(self): 
+        """打印一条描述电瓶容量的消息""" 
+        print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+```
+
+- 从模块导入多个类
+  ```py {.line-numbers}
+  from car import Car, ElectricCar 
+
+  my_beetle = Car('volkswagen', 'beetle', 2016) 
+  print(my_beetle.get_descriptive_name()) 
+
+  my_tesla = ElectricCar('tesla', 'roadster', 2016) 
+  print(my_tesla.get_descriptive_name())
+  ```
+
+- 导入整个模块
+  ```py {.line-numbers}
+  import car 
+
+  my_beetle = car.Car('volkswagen', 'beetle', 2016) 
+  print(my_beetle.get_descriptive_name()) 
+
+  my_tesla = car.ElectricCar('tesla', 'roadster', 2016) 
+  print(my_tesla.get_descriptive_name())
+  ```
+
+- 导入模块中所有类
+  不推荐
+  ```py {.line-numbers}
+  from module_name import * 
+  ```
+
+- 模块依赖
+  模块car.py文件：
+  ```py {.line-numbers}
+  class Car(): 
+      """一次模拟汽车的简单尝试""" 
+      def __init__(self, make, model, year): 
+          """初始化描述汽车的属性""" 
+          self.make = make 
+          self.model = model 
+          self.year = year 
+          self.odometer_reading = 0
+      
+      def get_descriptive_name(self): 
+          """返回整洁的描述性信息""" 
+          long_name = str(self.year) + ' ' + self.make + ' ' + self.model 
+          return long_name.title() 
+      def read_odometer(self): 
+          """打印一条指出汽车里程的消息""" 
+          print("This car has " + str(self.odometer_reading) + " miles on it.")
+      def update_odometer(self, mileage): 
+          """ 
+          将里程表读数设置为指定的值
+          禁止将里程表读数往回调
+          """ 
+          if mileage >= self.odometer_reading: 
+              self.odometer_reading = mileage 
+          else: 
+              print("You can't roll back an odometer!") 
+      def increment_odometer(self, miles): 
+          """将里程表读数增加指定的量""" 
+          self.odometer_reading += miles
+  ```
+
+  模块electric_car.py文件（.依赖car.py）：
+  ```py {.line-numbers}
+  from car import Car
+
+  class Battery(): 
+      """一次模拟电动汽车电瓶的简单尝试""" 
+      
+      def __init__(self, battery_size=70): 
+          """初始化电瓶的属性""" 
+          self.battery_size = battery_size 
+      def describe_battery(self): 
+          """打印一条描述电瓶容量的消息""" 
+          print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+
+  class ElectricCar(Car): 
+      """电动汽车的独特之处""" 
+      def __init__(self, make, model, year): 
+          """初始化父类的属性""" 
+          super().__init__(make, model, year) 
+          # self.battery_size = 70
+          self.battery = Battery()
+      def describe_battery(self): 
+          """打印一条描述电瓶容量的消息""" 
+          print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+  ```
+  导入模块文件
+  ```py {.line-numbers}
+  from car import Car 
+  from electric_car import ElectricCar 
+
+  my_beetle = Car('volkswagen', 'beetle', 2016) 
+  print(my_beetle.get_descriptive_name()) 
+
+  my_tesla = ElectricCar('tesla', 'roadster', 2016) 
+  print(my_tesla.get_descriptive_name()) 
+  ```
+
+### 类编码风格
+类名应采用驼峰命名法，即将类名中的每个单词的首字母都大写，而不使用下划线。实例名和模块名都采用小写格式，并在单词之间加上下划线
+
+
+## 文件和异常
+### 读取文件
+pi_digits.txt文件：
+```
+3.1415926535 
+ 8979323846 
+ 2643383279 
+```
+打开并读取文件
+```py {.line-numbers}
+with open('pi_digits.txt') as file_object: 
+    contents = file_object.read() 
+    print(contents)
+```
+- open()
+  函数open()接受一个参数：要打开的文件的名称，返回一个表示文件的对象。Python在当前执行的文件所在的目录中查找指定的文件
+
+- with关键字
+  关键字with在不再需要访问文件后将其关闭
+  > 也可以调用open()和close()来打开和关闭文件，但这样做时，如果程序存在bug，导致close()语句未执行，文件将不会关闭，但未妥善地关闭文件可能会导致数据丢失或受损。如果在程序中过早地调用close()，你会发现需要使用文件时它已关闭（无法访问），这会导致更多的错误
+
+- read()
+  read()方法读取文件的全部内容，并返回一个字符串
+  > read()到达文件末尾时返回一个空字符串
