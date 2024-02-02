@@ -24,6 +24,10 @@
   - [类编码风格](#类编码风格)
 - [文件和异常](#文件和异常)
   - [读取文件](#读取文件)
+  - [文件路径](#文件路径)
+  - [逐行读取](#逐行读取)
+  - [写入文件](#写入文件)
+  - [异常](#异常)
 
 <!-- /code_chunk_output -->
 
@@ -712,6 +716,8 @@ class ElectricCar(Car):
 
 ## 文件和异常
 ### 读取文件
+> 读取文本文件时，Python将其中的所有文本都解读为字符串。如果你读取的是数字，并要将其作为数值使用，就必须使用函数int()将其转换为整数，或使用函数float()将其转换为浮点数
+
 pi_digits.txt文件：
 ```
 3.1415926535 
@@ -734,3 +740,76 @@ with open('pi_digits.txt') as file_object:
 - read()
   read()方法读取文件的全部内容，并返回一个字符串
   > read()到达文件末尾时返回一个空字符串
+
+### 文件路径
+> **在Windows系统中，在文件路径中使用反斜杠（\）而不是斜杠（/）**
+- 相对文件路径
+  相对于当前运行的程序所在目录的位置
+- 绝对文件路径
+  通过使用绝对路径，可读取系统任何地方的文件
+
+### 逐行读取
+```py {.line-numbers}
+filename = 'pi_digits.txt' 
+with open(filename) as file_object: 
+    for line in file_object: 
+        # print(line)
+        # 删除多余空行
+        print(line.rstrip()) 
+```
+
+- readlines()
+  的方法readlines()从文件中读取每一行，并将其存储在一个列表中
+  ```py {.line-numbers}
+  filename = 'pi_digits.txt' 
+  with open(filename) as file_object: 
+      lines = file_object.readlines() 
+  for line in lines: 
+      print(line.rstrip()) 
+  ```
+
+### 写入文件
+> Python只能将字符串写入文本文件。要将数值数据存储到文本文件中，必须先使用函数str()将其转换为字符串格式
+
+> open()函数打开文件时，可指定**读取模式（'r'）**、**写入模式（'w'）**、**附加模式（'a'）**或**读取和写入文件的模式（'r+'）**。如果省略了模式实参，将以默认的只读模式打开文件
+
+> 以写入（'w'）模式打开文件时，如果写入的文件不存在，函数open()将自动创建它。**如果指定的文件已经存在，Python将在返回文件对象前清空该文件**
+
+> 以附加模式打开文件时，Python不会在返回文件对象前清空文件，而你写入到文件的行都将添加到文件末尾。**如果指定的文件不存在，Python将为你创建一个空文件**
+
+- write()
+  方法write()将一个字符串写入文件，**函数write()不会在你写入的文本末尾添加换行符**
+```py {.line-numbers}
+filename = 'programming.txt' 
+# open()第一个实参指定打开文件的名称，第二个实参'w'表示以写入模式打开文件
+with open(filename, 'w') as file_object: 
+    # 添加换行符'\n'
+    file_object.write("I love programming.\n") 
+    file_object.write("I love creating new games.\n")
+with open(filename, 'a') as file_object: 
+    file_object.write("I also love finding meaning in large datasets.\n") 
+    file_object.write("I love creating apps that can run in a browser.\n") 
+```
+
+### 异常
+> Python使用被称为异常的特殊对象来管理程序执行期间发生的错误。每当发生让Python不知所措的错误时，它都会创建一个异常对象。如果你编写了处理该异常的代码，程序将继续运行；如果你未对异常进行处理，程序将停止，并显示一个traceback，其中包含有关异常的报告
+
+> 异常是使用try-except代码块处理的。try-except代码块让Python执行指定的操作，同时告诉Python发生异常时怎么办。使用了try-except代码块时，即便出现异常，程序也将继续运行：显示你编写的友好的错误消息，而不是令用户迷惑的traceback
+
+#### ZeroDivisionError 异常
+> **try代码块只包含可能导致错误的代码，except代码块捕获错误并处理，依赖于try代码块成功执行的代码都放在else代码块中**
+```py {.line-numbers}
+print("Give me two numbers, and I'll divide them.") 
+print("Enter 'q' to quit.") 
+while True: 
+    first_number = input("\nFirst number: ") 
+    if first_number == 'q': 
+        break 
+    second_number = input("Second number: ") 
+    try: 
+        answer = int(first_number) / int(second_number) 
+    except ZeroDivisionError: 
+        print("You can't divide by 0!") 
+    else: 
+        print(answer)
+```
