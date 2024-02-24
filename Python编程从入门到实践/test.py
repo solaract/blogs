@@ -366,16 +366,259 @@
 #     file_object.write("I also love finding meaning in large datasets.\n") 
 #     file_object.write("I love creating apps that can run in a browser.\n") 
 
-print("Give me two numbers, and I'll divide them.") 
-print("Enter 'q' to quit.") 
-while True: 
-    first_number = input("\nFirst number: ") 
-    if first_number == 'q': 
-        break 
-    second_number = input("Second number: ") 
-    try: 
-        answer = int(first_number) / int(second_number) 
-    except ZeroDivisionError: 
-        print("You can't divide by 0!") 
-    else: 
-        print(answer)
+
+# print("Give me two numbers, and I'll divide them.") 
+# print("Enter 'q' to quit.") 
+# while True: 
+#     first_number = input("\nFirst number: ") 
+#     if first_number == 'q': 
+#         break 
+#     second_number = input("Second number: ") 
+#     try: 
+#         answer = int(first_number) / int(second_number) 
+#     except ZeroDivisionError: 
+#         print("You can't divide by 0!") 
+#     else: 
+#         print(answer)
+
+# filename = 'alice.txt' 
+# try: 
+#     with open(filename) as f_obj: 
+#         contents = f_obj.read() 
+# except FileNotFoundError: 
+#     msg = "Sorry, the file " + filename + " does not exist." 
+# print(msg) 
+
+# filename = 'alice.txt' 
+# try: 
+#     with open(filename) as f_obj: 
+#         contents = f_obj.read() 
+# except FileNotFoundError: 
+#     msg = "Sorry, the file " + filename + " does not exist." 
+#     print(msg) 
+# else: 
+#     # 计算文件大致包含多少个单词 
+#     words = contents.split() 
+#     num_words = len(words) 
+#     print("The file " + filename + " has about " + str(num_words) + " words.") 
+
+
+# def count_words(filename): 
+#     """计算一个文件大致包含多少个单词""" 
+#     try: 
+#         with open(filename) as f_obj: 
+#             contents = f_obj.read()  
+#     except FileNotFoundError: 
+#         pass
+#         # msg = "Sorry, the file " + filename + " does not exist." 
+#         # print(msg) 
+#     else: 
+#         # 计算文件大致包含多少个单词 
+#         words = contents.split() 
+#         num_words = len(words) 
+#         print("The file " + filename + " has about " + str(num_words) +  
+#             " words.") 
+ 
+# filenames = ['alice.txt', 'siddhartha.txt', 'moby_dick.txt', 'little_women.txt'] 
+# for filename in filenames: 
+#     count_words(filename) 
+
+# import json
+# # 如果以前存储了用户名，就加载它 
+# # 否则，就提示用户输入用户名并存储它 
+# filename = 'username.json' 
+# try: 
+#     with open(filename) as f_obj: 
+#         username = json.load(f_obj) 
+# except FileNotFoundError: 
+#     username = input("What is your name? ") 
+#     with open(filename, 'w') as f_obj: 
+#         json.dump(username, f_obj) 
+#         print("We'll remember you when you come back, " + username + "!") 
+# else: 
+#     print("Welcome back, " + username + "!") 
+
+
+# import json 
+# def greet_user(): 
+#     """问候用户，并指出其名字""" 
+#     filename = 'username.json' 
+#     try: 
+#         with open(filename) as f_obj: 
+#             username = json.load(f_obj) 
+#     except FileNotFoundError: 
+#         username = input("What is your name? ") 
+#         with open(filename, 'w') as f_obj: 
+#             json.dump(username, f_obj) 
+#             print("We'll remember you when you come back, " + username + "!") 
+#     else: 
+#         print("Welcome back, " + username + "!") 
+ 
+# greet_user() 
+
+# import json 
+# def get_stored_username(): 
+#     """如果存储了用户名，就获取它""" 
+#     filename = 'username.json' 
+#     try: 
+#         with open(filename) as f_obj: 
+#             username = json.load(f_obj) 
+#     except FileNotFoundError: 
+#         return None 
+#     else: 
+#         return username 
+# def greet_user(): 
+#     """问候用户，并指出其名字""" 
+#     username = get_stored_username() 
+#     if username: 
+#         print("Welcome back, " + username + "!") 
+#     else: 
+#         username = input("What is your name? ") 
+#         filename = 'username.json' 
+#         with open(filename, 'w') as f_obj: 
+#             json.dump(username, f_obj) 
+#             print("We'll remember you when you come back, " + username + "!") 
+# greet_user()
+
+# import json 
+# def get_stored_username(): 
+#     """如果存储了用户名，就获取它""" 
+#     filename = 'username.json' 
+#     try: 
+#         with open(filename) as f_obj: 
+#             username = json.load(f_obj) 
+#     except FileNotFoundError: 
+#         return None 
+#     else: 
+#         return username 
+# def get_new_username(): 
+#     """提示用户输入用户名""" 
+#     username = input("What is your name? ") 
+#     filename = 'username.json' 
+#     with open(filename, 'w') as f_obj: 
+#         json.dump(username, f_obj) 
+#     return username 
+ 
+# def greet_user(): 
+#     """问候用户，并指出其名字""" 
+#     username = get_stored_username() 
+#     if username: 
+#         print("Welcome back, " + username + "!") 
+#     else: 
+#         username = get_new_username() 
+#         print("We'll remember you when you come back, " + username + "!") 
+# greet_user() 
+
+
+# 测试代码
+
+# 测试函数
+# def get_formatted_name(first, last): 
+#     """Generate a neatly formatted full name.""" 
+#     full_name = first + ' ' + last 
+#     return full_name.title()
+
+# import unittest 
+# from name_function import get_formatted_name 
+# class NamesTestCase(unittest.TestCase): 
+#     """测试name_function.py""" 
+#     def test_first_last_name(self): 
+#         """能够正确地处理像Janis Joplin这样的姓名吗?"""            
+#         formatted_name = get_formatted_name('janis', 'joplin') 
+#         self.assertEqual(formatted_name, 'Janis1 Joplin') 
+# unittest.main() 
+
+#测试类
+# class AnonymousSurvey(): 
+#     """收集匿名调查问卷的答案""" 
+     
+#     def __init__(self, question): 
+#         """存储一个问题，并为存储答案做准备""" 
+#         self.question = question 
+#         self.responses = [] 
+         
+#     def show_question(self): 
+#         """显示调查问卷""" 
+#         print(self.question) 
+         
+#     def store_response(self, new_response): 
+#         """存储单份调查答卷""" 
+#         self.responses.append(new_response) 
+         
+#     def show_results(self): 
+#         """显示收集到的所有答卷""" 
+#         print("Survey results:") 
+#         for response in self.responses: 
+#             print('- ' + response) 
+
+# from survey import AnonymousSurvey 
+ 
+# #定义一个问题，并创建一个表示调查的AnonymousSurvey对象 
+# question = "What language did you first learn to speak?" 
+# my_survey = AnonymousSurvey(question) 
+ 
+# #显示问题并存储答案 
+# my_survey.show_question() 
+# print("Enter 'q' at any time to quit.\n") 
+# while True: 
+#     response = input("Language: ") 
+#     if response == 'q': 
+#         break 
+#     my_survey.store_response(response) 
+# # 显示调查结果 
+# print("\nThank you to everyone who participated in the survey!") 
+# my_survey.show_results() 
+
+# import unittest 
+# from survey import AnonymousSurvey 
+ 
+# class TestAnonymousSurvey(unittest.TestCase): 
+#     """针对AnonymousSurvey类的测试""" 
+     
+#     def test_store_single_response(self): 
+#         """测试单个答案会被妥善地存储""" 
+#         question = "What language did you first learn to speak?" 
+#         my_survey = AnonymousSurvey(question) 
+#         my_survey.store_response('English') 
+         
+#         self.assertIn('English', my_survey.responses) 
+         
+#     def test_store_three_responses(self): 
+#         """测试三个答案会被妥善地存储""" 
+#         question = "What language did you first learn to speak?" 
+#         my_survey = AnonymousSurvey(question) 
+#         responses = ['English', 'Spanish', 'Mandarin'] 
+#         for response in responses: 
+#             my_survey.store_response(response) 
+             
+#         for response in responses: 
+#             self.assertIn(response, my_survey.responses) 
+ 
+# unittest.main() 
+
+import unittest 
+from survey import AnonymousSurvey 
+ 
+class TestAnonymousSurvey(unittest.TestCase): 
+    """针对AnonymousSurvey类的测试""" 
+    
+    def setUp(self):
+        """ 
+        创建一个调查对象和一组答案，供使用的测试方法使用 
+        """ 
+        question = "What language did you first learn to speak?"
+        self.my_survey = AnonymousSurvey(question)
+        self.responses = ['English', 'Spanish', 'Mandarin']
+    def test_store_single_response(self): 
+        """测试单个答案会被妥善地存储""" 
+        self.my_survey.store_response(self.responses[0]) 
+        self.assertIn(self.responses[0], self.my_survey.responses) 
+         
+    def test_store_three_responses(self): 
+        """测试三个答案会被妥善地存储""" 
+        for response in self.responses: 
+            self.my_survey.store_response(response) 
+        for response in self.responses: 
+            self.assertIn(response, self.my_survey.responses) 
+ 
+unittest.main() 
