@@ -33,6 +33,8 @@
 - [测试代码](#测试代码)
   - [测试函数](#测试函数)
   - [测试类](#测试类)
+- [项目](#项目)
+  - [创建虚拟环境](#创建虚拟环境)
 
 <!-- /code_chunk_output -->
 
@@ -1210,3 +1212,24 @@ Ran 2 tests in 0.000s
 OK
 ```
 > 运行测试用例时，每完成一个单元测试，Python都打印一个字符：测试通过时打印一个句点；测试引发错误时打印一个E；测试导致断言失败时打印一个F
+
+## 项目
+### 创建虚拟环境
+1. 创建虚拟环境
+  ```bash
+  python -m venv venv
+  ```
+  > 将在项目下新建文件夹'venv'
+2. 激活虚拟环境
+  ```bash
+  .\venv\Scripts\activate
+  ```
+  > 报错“**此系统上禁止运行脚本**”时，以管理员身份运行powershell并执行：
+  ```bash
+  Set-ExecutionPolicy RemoteSigned
+  ```
+3. 切换编辑器的解释器环境为虚拟环境中的\venv\Scripts\python.exe
+4. 退出虚拟环境
+  ```bash
+  deactivate
+  ```
