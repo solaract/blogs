@@ -321,6 +321,8 @@ describe_pet(pet_name='harry', animal_type='hamster')
 describe_pet(animal_type='hamster', pet_name='harry')
 
 # 传入列表副本实参
+# 切片表示法[:]创建列表的副本
+# 函数中的修改不会影响列表list_name
 unction_name(list_name[:])
 ```
 
@@ -555,9 +557,9 @@ class ElectricCar(Car):
         super().__init__(make, model, year) 
         # self.battery_size = 70
         self.battery = Battery()
-    def describe_battery(self): 
-        """打印一条描述电瓶容量的消息""" 
-        print("This car has a " + str(self.battery_size) + "-kWh battery.") 
+    # def describe_battery(self): 
+    #     """打印一条描述电瓶容量的消息""" 
+    #     print("This car has a " + str(self.battery_size) + "-kWh battery.") 
 
 my_tesla = ElectricCar('tesla', 'model s', 2016) 
 print(my_tesla.get_descriptive_name()) 
