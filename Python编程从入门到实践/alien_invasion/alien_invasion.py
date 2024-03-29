@@ -5,6 +5,7 @@ import pygame
 
 from settings import Settings
 from ship import Ship
+from alien import Alien
 import game_functions as gf
 from pygame.sprite import Group
 
@@ -33,9 +34,18 @@ def run_game():
     # bg_color = (230,230,230)
     # bg_color = ai_settings.bg_color
 
+    # 创建 Clock 对象
+    clock = pygame.time.Clock()
+
     ship = Ship(ai_settings,screen)
+    # alien = Alien(ai_settings,screen)
     # 创建一个用于存储子弹的编组
     bullets = Group()
+    # 创建一个外星人编组
+    aliens = Group()
+
+    # 创建外星人群
+    gf.create_fleet(ai_settings,screen,ship,aliens)
 
     # 开始游戏的主循环
     while True:
@@ -63,8 +73,8 @@ def run_game():
         #     if bullet.rect.bottom <= 0:
         #         bullets.remove(bullet)
         
-        gf.update_bullets(bullets)
-        
+        gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
+        gf.update_aliens(ai_settings,aliens)
         # 将输出写入到终端而花费的时间比将图形绘制到游戏窗口花费的时间还多
         # print(len(bullets))
 
@@ -75,7 +85,10 @@ def run_game():
         # # 让最近绘制的屏幕可见
         # # 移动游戏元素时，pygame.display.flip()将不断更新屏幕，以显示元素的新位置，并在原来的位置隐藏元素，从而营造平滑移动的效果
         # pygame.display.flip()
-        gf.update_screen(ai_settings,screen,ship,bullets)
+        gf.update_screen(ai_settings,screen,ship,aliens,bullets)
+
+        # 控制帧率为每秒 60 帧
+        clock.tick(120)
 
 
 run_game()
