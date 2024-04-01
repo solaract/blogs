@@ -189,32 +189,50 @@ def change_fleet_direction(ai_settings,aliens):
 
 def ship_hit(ai_settings,stats,screen,ship,aliens,bullets):
     """响应被外星人撞到的飞船"""
-    # 将ships_left减1
-    stats.ships_left -= 1
+    if stats.ships_left > 0:
+        # 将ships_left减1
+        stats.ships_left -= 1
 
-    # 清空外星人列表和子弹列表
-    aliens.empty()
-    bullets.empty()
+        # 清空外星人列表和子弹列表
+        aliens.empty()
+        bullets.empty()
 
-    # 创建一群新的外星人，并将飞船放到屏幕底端中央
-    create_fleet(ai_settings,screen,ship,aliens)
-    ship.center_ship()
+        # 创建一群新的外星人，并将飞船放到屏幕底端中央
+        create_fleet(ai_settings,screen,ship,aliens)
+        ship.center_ship()
 
-    # 暂停
-    sleep(0.5)
+        # 暂停
+        sleep(2)
+    else:
+        stats.game_active = False
+
+
+def check_aliens_bottom(ai_settings,stats,screen,ship,aliens,bullets):
+    """检查是否有外星人到达了屏幕底端"""
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            # 像飞船被撞到一样进行处理
+            ship_hit(ai_settings,stats,screen,ship,aliens,bullets)
+            break
 
 
 
 def update_aliens(ai_settings,stats,screen,ship,aliens,bullets):
     """检查是否有外星人位于屏幕边缘，并更新整群外星人的位置"""
-    check_fleet_edges(ai_settings,aliens)
-    aliens.update()
-
     # 检测外星人和飞船之间的碰撞
     # 方法spritecollideany()接受两个实参：一个精灵和一个编组。它检查编组是否有成员与精灵发生了碰撞，并在找到与精灵发生了碰撞的成员后就停止遍历编组
     # 如果没有发生碰撞，spritecollideany()将返回None。如果找到了与飞船发生碰撞的外星人，它就返回这个外星人
     if pygame.sprite.spritecollideany(ship,aliens):
         # print("ship hit!")
         ship_hit(ai_settings,stats,screen,ship,aliens,bullets)
+    
+    # 检查是否有外星人到达屏幕底端
+    check_aliens_bottom(ai_settings,stats,screen,ship,aliens,bullets)
+    
+    check_fleet_edges(ai_settings,aliens)
+    aliens.update()
+
+    
 
     

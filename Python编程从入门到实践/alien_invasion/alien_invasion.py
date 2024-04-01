@@ -64,21 +64,22 @@ def run_game():
         gf.check_evets(ai_settings,screen,ship,bullets)
         
 
-        ship.update()
+        if stats.game_active:
+            ship.update()
 
+            # # 当你对Group调用update()时，Group将自动对其中的每个Sprite调用update()，因此代码行bullets.update()将为Groupbullets中的每颗子弹调用bullet.update()
+            # bullets.update()
 
-        # # 当你对Group调用update()时，Group将自动对其中的每个Sprite调用update()，因此代码行bullets.update()将为Groupbullets中的每颗子弹调用bullet.update()
-        # bullets.update()
-
-        # # 删除已消失的子弹
-        # # 在for循环中，不应从列表或编组中删除条目，因此必须遍历编组的副本
-        # # 使用方法copy()来设置for循环，这让我们能够在循环中修改bullets
-        # for bullet in bullets.copy():
-        #     if bullet.rect.bottom <= 0:
-        #         bullets.remove(bullet)
+            # # 删除已消失的子弹
+            # # 在for循环中，不应从列表或编组中删除条目，因此必须遍历编组的副本
+            # # 使用方法copy()来设置for循环，这让我们能够在循环中修改bullets
+            # for bullet in bullets.copy():
+            #     if bullet.rect.bottom <= 0:
+            #         bullets.remove(bullet)
+            
+            gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
+            gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
         
-        gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
-        gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
         # 将输出写入到终端而花费的时间比将图形绘制到游戏窗口花费的时间还多
         # print(len(bullets))
 
