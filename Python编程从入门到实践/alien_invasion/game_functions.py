@@ -3,6 +3,7 @@ import pygame
 
 from bullet import Bullet
 from alien import Alien
+from time import sleep
 
 
 def check_keydown_events(event,ai_settings,screen,ship,bullets):
@@ -186,9 +187,34 @@ def change_fleet_direction(ai_settings,aliens):
     ai_settings.fleet_direction *= -1
 
 
-def update_aliens(ai_settings,aliens):
+def ship_hit(ai_settings,stats,screen,ship,aliens,bullets):
+    """响应被外星人撞到的飞船"""
+    # 将ships_left减1
+    stats.ships_left -= 1
+
+    # 清空外星人列表和子弹列表
+    aliens.empty()
+    bullets.empty()
+
+    # 创建一群新的外星人，并将飞船放到屏幕底端中央
+    create_fleet(ai_settings,screen,ship,aliens)
+    ship.center_ship()
+
+    # 暂停
+    sleep(0.5)
+
+
+
+def update_aliens(ai_settings,stats,screen,ship,aliens,bullets):
     """检查是否有外星人位于屏幕边缘，并更新整群外星人的位置"""
     check_fleet_edges(ai_settings,aliens)
     aliens.update()
+
+    # 检测外星人和飞船之间的碰撞
+    # 方法spritecollideany()接受两个实参：一个精灵和一个编组。它检查编组是否有成员与精灵发生了碰撞，并在找到与精灵发生了碰撞的成员后就停止遍历编组
+    # 如果没有发生碰撞，spritecollideany()将返回None。如果找到了与飞船发生碰撞的外星人，它就返回这个外星人
+    if pygame.sprite.spritecollideany(ship,aliens):
+        # print("ship hit!")
+        ship_hit(ai_settings,stats,screen,ship,aliens,bullets)
 
     

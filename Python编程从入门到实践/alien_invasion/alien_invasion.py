@@ -8,6 +8,7 @@ from ship import Ship
 from alien import Alien
 import game_functions as gf
 from pygame.sprite import Group
+from game_stats import GameStats
 
 
 # 修改当前工作目录为指定目录
@@ -36,6 +37,9 @@ def run_game():
 
     # 创建 Clock 对象
     clock = pygame.time.Clock()
+
+    # 创建一个用于存储游戏统计信息的实例
+    stats = GameStats(ai_settings)
 
     ship = Ship(ai_settings,screen)
     # alien = Alien(ai_settings,screen)
@@ -74,7 +78,7 @@ def run_game():
         #         bullets.remove(bullet)
         
         gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
-        gf.update_aliens(ai_settings,aliens)
+        gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
         # 将输出写入到终端而花费的时间比将图形绘制到游戏窗口花费的时间还多
         # print(len(bullets))
 
