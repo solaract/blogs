@@ -9,6 +9,7 @@ from alien import Alien
 import game_functions as gf
 from pygame.sprite import Group
 from game_stats import GameStats
+from button import Button
 
 
 # 修改当前工作目录为指定目录
@@ -51,6 +52,9 @@ def run_game():
     # 创建外星人群
     gf.create_fleet(ai_settings,screen,ship,aliens)
 
+    # 创建Play按钮
+    play_button = Button(ai_settings,screen,'Play')
+
     # 开始游戏的主循环
     while True:
         # # 监视键盘和鼠标事件
@@ -61,7 +65,7 @@ def run_game():
         #         sys.exit()
 
         # 通过隔离事件循环，将事件管理与游戏的其他方面（如更新屏幕）分离
-        gf.check_evets(ai_settings,screen,ship,bullets)
+        gf.check_evets(ai_settings,screen,stats, play_button,ship,aliens,bullets)
         
 
         if stats.game_active:
@@ -90,7 +94,7 @@ def run_game():
         # # 让最近绘制的屏幕可见
         # # 移动游戏元素时，pygame.display.flip()将不断更新屏幕，以显示元素的新位置，并在原来的位置隐藏元素，从而营造平滑移动的效果
         # pygame.display.flip()
-        gf.update_screen(ai_settings,screen,ship,aliens,bullets)
+        gf.update_screen(ai_settings,screen,stats,ship,aliens,bullets,play_button)
 
         # 控制帧率为每秒 60 帧
         clock.tick(120)

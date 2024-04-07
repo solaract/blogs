@@ -30,7 +30,27 @@ def check_keyup_events(event,ship):
         ship.moving_left = False
 
 
-def check_evets(ai_settings,screen,ship,bullets):
+def check_play_button(ai_settings,screen,stats,play_button,ship,aliens,bullets,mouse_x, mouse_y):
+    """在玩家单击Play按钮时开始新游戏"""
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and not stats.game_active:
+        # 隐藏光标 
+        pygame.mouse.set_visible(False)
+        # 重置游戏统计信息
+        stats.reset_stats()
+        stats.game_active = True
+
+        # 清空外星人列表和子弹列表
+        aliens.empty()
+        bullets.empty()
+
+        # 创建一群新的外星人，并让飞船居中
+        create_fleet(ai_settings,screen,ship,aliens)
+        ship.center_ship()
+
+
+
+def check_evets(ai_settings,screen,stats, play_button,ship,aliens,bullets):
     """响应按键和鼠标事件"""
     # 监视键盘和鼠标事件
     # 方法pygame.event.get()访问Pygame检测到的事件
@@ -44,7 +64,7 @@ def check_evets(ai_settings,screen,ship,bullets):
             #     ship.moving_right = True
             # elif event.key == pygame.K_LEFT:
             #     ship.moving_left = True
-            check_keydown_events(event,ai_settings,screen,ship,bullets)
+            check_keydown_events(ai_settings,screen,stats,play_button,ship,aliens,bullets,mouse_x, mouse_y)
 
         elif event.type == pygame.KEYUP:
             # if event.key == pygame.K_RIGHT:
@@ -52,9 +72,16 @@ def check_evets(ai_settings,screen,ship,bullets):
             # elif event.key == pygame.K_LEFT:
             #     ship.moving_left = False
             check_keyup_events(event,ship)
+        # 无论玩家单击屏幕的什么地方，Pygame都将检测到一个MOUSEBUTTONDOWN事件
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # pygame.mouse. get_pos()，它返回一个元组，其中包含玩家单击时鼠标的x和y坐标
+            mouse_x,mouse_y = pygame.mouse.get_pos()
+            # collidepoint()检查鼠标单击位置是否在Play按钮的rect内
+            check_play_button(ai_settings,screen,stats,play_button,ship,aliens,bullets,mouse_x, mouse_y)
+
             
 
-def update_screen(ai_settings,screen,ship,aliens,bullets):
+def update_screen(ai_settings,screen,stats,ship,aliens,bullets,play_button):
     """更新屏幕上的图像，并切换到新屏幕"""
     # 方法screen.fill()，用背景色填充屏幕；这个方法只接受一个实参：一种颜色
     screen.fill(ai_settings.bg_color)
@@ -68,6 +95,10 @@ def update_screen(ai_settings,screen,ship,aliens,bullets):
     # alien.blitme()
     # 对编组调用draw()时，Pygame自动绘制编组的每个元素，绘制位置由元素的属性rect决定
     aliens.draw(screen)
+
+    # 如果游戏处于非活动状态，就绘制Play按钮
+    if not stats.game_active:
+        play_button.draw_button()
 
     # 让最近绘制的屏幕可见
     # 移动游戏元素时，pygame.display.flip()将不断更新屏幕，以显示元素的新位置，并在原来的位置隐藏元素，从而营造平滑移动的效果
@@ -202,9 +233,10 @@ def ship_hit(ai_settings,stats,screen,ship,aliens,bullets):
         ship.center_ship()
 
         # 暂停
-        sleep(2)
+        sleep(0.5)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 
 def check_aliens_bottom(ai_settings,stats,screen,ship,aliens,bullets):
