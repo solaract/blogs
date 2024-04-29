@@ -10,6 +10,7 @@ import game_functions as gf
 from pygame.sprite import Group
 from game_stats import GameStats
 from button import Button
+from scoreboard import Scoreboard
 
 
 # 修改当前工作目录为指定目录
@@ -39,8 +40,9 @@ def run_game():
     # 创建 Clock 对象
     clock = pygame.time.Clock()
 
-    # 创建一个用于存储游戏统计信息的实例
+    # 创建存储游戏统计信息的实例，并创建记分牌
     stats = GameStats(ai_settings)
+    sb = Scoreboard(ai_settings,screen,stats)
 
     ship = Ship(ai_settings,screen)
     # alien = Alien(ai_settings,screen)
@@ -81,7 +83,7 @@ def run_game():
             #     if bullet.rect.bottom <= 0:
             #         bullets.remove(bullet)
             
-            gf.update_bullets(ai_settings,screen,ship,aliens,bullets)
+            gf.update_bullets(ai_settings,screen,stats,sb,ship,aliens,bullets)
             gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
         
         # 将输出写入到终端而花费的时间比将图形绘制到游戏窗口花费的时间还多
@@ -94,7 +96,7 @@ def run_game():
         # # 让最近绘制的屏幕可见
         # # 移动游戏元素时，pygame.display.flip()将不断更新屏幕，以显示元素的新位置，并在原来的位置隐藏元素，从而营造平滑移动的效果
         # pygame.display.flip()
-        gf.update_screen(ai_settings,screen,stats,ship,aliens,bullets,play_button)
+        gf.update_screen(ai_settings,screen,stats,sb,ship,aliens,bullets,play_button)
 
         # 控制帧率为每秒 60 帧
         clock.tick(120)
