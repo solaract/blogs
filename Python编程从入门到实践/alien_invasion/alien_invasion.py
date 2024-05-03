@@ -67,7 +67,7 @@ def run_game():
         #         sys.exit()
 
         # 通过隔离事件循环，将事件管理与游戏的其他方面（如更新屏幕）分离
-        gf.check_evets(ai_settings,screen,stats, play_button,ship,aliens,bullets)
+        gf.check_evets(ai_settings,screen,stats,sb,play_button,ship,aliens,bullets)
         
 
         if stats.game_active:
@@ -84,7 +84,7 @@ def run_game():
             #         bullets.remove(bullet)
             
             gf.update_bullets(ai_settings,screen,stats,sb,ship,aliens,bullets)
-            gf.update_aliens(ai_settings,stats,screen,ship,aliens,bullets)
+            gf.update_aliens(ai_settings,stats,sb,screen,ship,aliens,bullets)
         
         # 将输出写入到终端而花费的时间比将图形绘制到游戏窗口花费的时间还多
         # print(len(bullets))
