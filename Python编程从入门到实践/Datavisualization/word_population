@@ -1,0 +1,18 @@
+import json,os
+
+# 修改当前工作目录为指定目录
+os.chdir('Python编程从入门到实践\\Datavisualization')
+# # 打印修改后的当前工作目录
+# print("修改后的工作目录:", os.getcwd())
+
+# 将数据加载到一个列表中
+filename = 'population_data.json'
+with open(filename) as f:
+    pop_data = json.load(f)
+
+# 打印每个国家2010年的人口数量
+for pop_dict in pop_data:
+    if pop_dict['Year'] == '2010':
+       country_name = pop_dict['Country Name']
+       population = int(float(pop_dict['Value']))
+       print(country_name + ': ' + str(population)) 
