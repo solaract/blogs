@@ -3,3 +3,7 @@ __pycache__
 pcc_3e-main
 *.zip
 venv
+Include
+Lib
+Scripts
+pyvenv.cfg
