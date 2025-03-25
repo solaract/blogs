@@ -38,6 +38,6 @@ def fetch_fund_scale(fund_code):
     return None
 
 # # 示例用法
-# fund_code = "110020"
+# fund_code = "022367"
 # scale = fetch_fund_scale(fund_code)
 # print(f"基金代码 {fund_code} 的规模变动数据为: {scale}")
