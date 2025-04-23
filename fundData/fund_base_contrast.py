@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import os
 from tqdm import tqdm
-import fundScale  # 自定义模块，用于备用获取基金规模
+import fund_base_info  # 自定义模块，用于备用获取基金规模
 
 # 常量定义
 COLUMNS_ORDER = ['基金代码', '基金名称', '基金规模（亿）', '成立时间', '跟踪方式']
@@ -72,7 +72,7 @@ def _get_fund_scale(code, detail_df, progress_bar):
                 return _convert_scale(scale_row.iloc[0]['value'])
             
         # 主接口无数据时尝试备用接口
-        backup_data = fundScale.fetch_fund_data(code)
+        backup_data = fund_base_info.fetch_fund_data(code)
         backup_scale = backup_data['Data_fluctuationScale']['series'][-1]['y']
         return round(backup_scale, 2) if backup_scale else None
     except Exception as e:
