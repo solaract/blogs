@@ -95,22 +95,27 @@ for code in fund_codes:
         fund_info = fund_info_df[fund_info_df['基金代码'] == code].iloc[0].to_dict()
 
         # print(fund_info)
+
+        # 填充数据字典
+        output_data['基金代码'].append(code)
+        output_data['基金名称'].append(fund_info['基金名称'])
         
         # 网页数据抓取
         res = requests.get(f'https://fund.eastmoney.com/{code}.html')
         res.encoding = "utf-8"
         # print(res.text)
         soup = BeautifulSoup(res.text, 'html.parser')
-        # print(soup.text)
+        # print(soup)
         
-        # 填充数据字典
-        output_data['基金代码'].append(code)
-        output_data['基金名称'].append(fund_info['基金名称'])
-
         if soup:
-            date_tag = soup.find('td', string=re.compile(r'成\s*立\s*日'))
-            print(date_tag.text)
-            output_data['成立日期'].append(re.search(r'\d{4}-\d{2}-\d{2}', date_tag.text).group() if date_tag else '')
+            # span_tag = soup.find_all('div', string=re.compile(r'成\s*立\s*日'))
+            fund_info_tag = soup.find('div', class_='infoOfFund')
+            date_tag = fund_info_tag.table.find_all('tr')[1].td
+            print(fund_info_tag.table.find_all('tr')[1].td)
+            # data_tag = fund_info_tag.table.tbody.tr
+            # print(span_tag)
+            output_data['成立日期'].append(re.search(r'\d{4}-\d{2}-\d{2}', date_tag).group() if date_tag else '')
+            print(output_data)
         
         # 填充指标数据
         for key in ['今年来', '近1周', '近1月', '近3月', '近6月', '近1年', '近2年', '近3年']:
