@@ -2,6 +2,7 @@ import os
 import akshare as ak
 import pandas as pd
 from openpyxl import load_workbook, Workbook
+from openpyxl.styles import PatternFill, Alignment
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -78,7 +79,8 @@ for t, (name, row) in yield_type_map.items():
     data = json.loads(json_str)
     # hs300_item = next(item for item in data['Data'] if item['name'] == "沪深300")
     # hs300_data[name] = data['Data'][2]['data'][-1][1]
-    ws[f'B{row}'] = data['Data'][2]['data'][-1][1]
+    hs300_data = data['Data'][2]['data'][-1][1]
+    ws[f'B{row}'] = f'{hs300_data}%'
     # print(hs300_data)
 
 # 写入B列
@@ -92,6 +94,12 @@ for t, (name, row) in yield_type_map.items():
 
 # 5. 处理各基金数据（使用pandas批量处理）
 fund_info_df = ak.fund_info_index_em(symbol="沪深指数", indicator="被动指数型")
+
+color = ['F8CBAD','FFC000','8EA9DB','A9D08E']
+sum1 = 0
+sum2 = 0
+sum3 = 0
+sum5 = 0
 
 for code in fund_codes:
     # try:
@@ -137,7 +145,18 @@ for code in fund_codes:
         
         # 填充收益率指标数据
         for key in ['今年来', '近1周', '近1月', '近3月', '近6月', '近1年', '近2年', '近3年']:
-            output_data[key] = f'{fund_info[key]}%' if fund_info[key] else ''
+            if fund_info[key]:
+                 output_data[key] = f'{fund_info[key]}%'
+                 match key:
+                    case '近1年':
+                        sum1 = sum1 + fund_info[key]
+                    case '近2年':
+                        sum2 = sum2 + fund_info[key]
+                    case '近3年':
+                        sum3 = sum3 + fund_info[key]
+            else:
+                 output_data[key] = ''
+
         
         # 获取5年收益率
         url = f'https://api.fund.eastmoney.com/pinzhong/LJSYLZS?fundCode={code}&indexcode=000300&type=fiy&callback=yield'
@@ -147,6 +166,7 @@ for code in fund_codes:
         data = json.loads(json_str)
         fiy_data = data['Data'][0]['data'][-1][1]
         output_data['近5年'] = f'{fiy_data}%'
+        sum5 = sum5 + fiy_data
 
         
 
@@ -193,20 +213,66 @@ for code in fund_codes:
 
 print(output_list)
 
-for i in range(len(output_list)):
+len = len(output_list)
+ave1 = sum1 / len
+ave2 = sum2 / len
+ave3 = sum3 / len
+ave5 = sum5 / len
+alig = Alignment('center','center')
+ave1_tag = 0
+ave2_tag = 0
+ave3_tag = 0
+ave5_tag = 0
+for i in range(len):
     col = chr(67 + i)
     ws[f'{col}1'] = output_list[i]['基金代码']
+    ws[f'{col}1'].alignment = alig
     ws[f'{col}2'] = output_list[i]['基金名称']
+    ws[f'{col}2'].alignment = alig
     ws[f'{col}3'] = output_list[i]['成立日期']
+    ws[f'{col}3'].alignment = alig
 # 写入指标数据
     for j, key in enumerate(['今年来', '近1周', '近1月', '近3月', '近6月', '近1年', '近2年', '近3年','近5年'], start=4):
         ws[f'{col}{j}'] = output_list[i][key]
+        ws[f'{col}{j}'].alignment = alig
+        match key:
+            case '近1年':
+                if float(output_list[i][key].split('%')[0]) > ave1:
+                    ws[f'{col}{j}'].fill = PatternFill('solid',fgColor=color[0])
+                    ave1_tag = 1
+            case '近2年':
+                if float(output_list[i][key].split('%')[0]) > ave2:
+                    ws[f'{col}{j}'].fill = PatternFill('solid',fgColor=color[0])
+                    ave2_tag = 1
+            case '近3年':
+                if float(output_list[i][key].split('%')[0]) > ave3:
+                    ws[f'{col}{j}'].fill = PatternFill('solid',fgColor=color[0])
+                    ave3_tag = 1
+            case '近5年':
+                if float(output_list[i][key].split('%')[0]) > ave5:
+                    ws[f'{col}{j}'].fill = PatternFill('solid',fgColor=color[0])
+                    ave5_tag = 1
     
     # 写入其他数据
     ws[f'{col}13'] = output_list[i]['年化跟踪误差']
+    ws[f'{col}13'].fill = PatternFill('solid',fgColor=color[1])
+    ws[f'{col}13'].alignment = alig
     ws[f'{col}14'] = output_list[i]['管理费率']
+    ws[f'{col}14'].fill = PatternFill('solid',fgColor=color[2])
+    ws[f'{col}14'].alignment = alig
     ws[f'{col}15'] = output_list[i]['托管费率']
+    ws[f'{col}15'].fill = PatternFill('solid',fgColor=color[2])
+    ws[f'{col}15'].alignment = alig
     ws[f'{col}16'] = output_list[i]['基金规模']
+    ws[f'{col}16'].alignment = alig
+
+    if ave1_tag and ave2_tag and ave3_tag and ave5_tag:
+        ws[f'{col}2'].fill = PatternFill('solid',fgColor=color[3])
+    ave1_tag = 0
+    ave2_tag = 0
+    ave3_tag = 0
+    ave5_tag = 0
+
      
 
 # 保存文件
