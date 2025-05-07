@@ -66,22 +66,22 @@ yield_type_map = {
     'fiy':('5年',12)
 }
 
-# 获取沪深300指数数据
-# hs300_data = {}
-for t, (name, row) in yield_type_map.items():
-    # print(t)
-    url = f'https://api.fund.eastmoney.com/pinzhong/LJSYLZS?fundCode=110020&indexcode=000300&type={t}&callback=yield'
-    response = requests.get(url, headers={'Referer': 'https://fund.eastmoney.com/110020.html?spm=search',
-                                          'Host': 'api.fund.eastmoney.com'})
-    # print(url)
-    # print(response.text)
-    json_str = response.text[6:-1]
-    data = json.loads(json_str)
-    # hs300_item = next(item for item in data['Data'] if item['name'] == "沪深300")
-    # hs300_data[name] = data['Data'][2]['data'][-1][1]
-    hs300_data = data['Data'][2]['data'][-1][1]
-    ws[f'B{row}'] = f'{hs300_data}%'
-    # print(hs300_data)
+# # 获取沪深300指数数据
+# # hs300_data = {}
+# for t, (name, row) in yield_type_map.items():
+#     # print(t)
+#     url = f'https://api.fund.eastmoney.com/pinzhong/LJSYLZS?fundCode=110020&indexcode=000300&type={t}&callback=yield'
+#     response = requests.get(url, headers={'Referer': 'https://fund.eastmoney.com/110020.html?spm=search',
+#                                           'Host': 'api.fund.eastmoney.com'})
+#     # print(url)
+#     # print(response.text)
+#     json_str = response.text[6:-1]
+#     data = json.loads(json_str)
+#     # hs300_item = next(item for item in data['Data'] if item['name'] == "沪深300")
+#     # hs300_data[name] = data['Data'][2]['data'][-1][1]
+#     hs300_data = data['Data'][2]['data'][-1][1]
+#     ws[f'B{row}'] = f'{hs300_data}%'
+#     # print(hs300_data)
 
 # 写入B列
 # ws['B4'] = hs300_data.get('今年', '')
@@ -143,31 +143,61 @@ for code in fund_codes:
             output_data['基金规模'] = sclae_data.group(1) if sclae_data else ''
             # print(output_data)
         
-        # 填充收益率指标数据
-        for key in ['今年来', '近1周', '近1月', '近3月', '近6月', '近1年', '近2年', '近3年']:
-            if fund_info[key]:
-                 output_data[key] = f'{fund_info[key]}%'
-                 match key:
-                    case '近1年':
-                        sum1 = sum1 + fund_info[key]
-                    case '近2年':
-                        sum2 = sum2 + fund_info[key]
-                    case '近3年':
-                        sum3 = sum3 + fund_info[key]
-            else:
-                 output_data[key] = ''
+        # # 填充收益率指标数据
+        # for key in ['今年来', '近1周', '近1月', '近3月', '近6月', '近1年', '近2年', '近3年']:
+        #     if fund_info[key]:
+        #          output_data[key] = f'{fund_info[key]}%'
+        #          match key:
+        #             case '近1年':
+        #                 sum1 = sum1 + fund_info[key]
+        #             case '近2年':
+        #                 sum2 = sum2 + fund_info[key]
+        #             case '近3年':
+        #                 sum3 = sum3 + fund_info[key]
+        #     else:
+        #          output_data[key] = ''
 
         
         # 获取5年收益率
-        url = f'https://api.fund.eastmoney.com/pinzhong/LJSYLZS?fundCode={code}&indexcode=000300&type=fiy&callback=yield'
-        response = requests.get(url, headers={'Referer': f'https://fund.eastmoney.com/{code}.html?spm=search',
-                                            'Host': 'api.fund.eastmoney.com'})
-        json_str = response.text[6:-1]
-        data = json.loads(json_str)
-        fiy_data = data['Data'][0]['data'][-1][1]
-        output_data['近5年'] = f'{fiy_data}%'
-        sum5 = sum5 + fiy_data
+        # url = f'https://api.fund.eastmoney.com/pinzhong/LJSYLZS?fundCode={code}&indexcode=000300&type=fiy&callback=yield'
+        # response = requests.get(url, headers={'Referer': f'https://fund.eastmoney.com/{code}.html?spm=search',
+        #                                     'Host': 'api.fund.eastmoney.com'})
+        # json_str = response.text[6:-1]
+        # data = json.loads(json_str)
+        # fiy_data = data['Data'][0]['data'][-1][1]
+        # output_data['近5年'] = f'{fiy_data}%'
+        # sum5 = sum5 + fiy_data
 
+        # 获取收益率
+        rise_url = f'https://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jdzf&code={code}'
+        rise_res = requests.get(rise_url)
+        # print(rise_res.text)
+        rise_html = re.findall(r"content:\s*\"(.*?)\"\s*};", rise_res.text, re.DOTALL)[0]
+        # rise_res.encoding = "utf-8"
+        rise_soup = BeautifulSoup(rise_html, 'html.parser')
+        rise_data = rise_soup.div.contents
+
+        if sum1 == 0:
+            for i in range(1,9):
+                hs300_data = rise_data[i].contents[3].text
+                ws[f'B{i+3}'] = hs300_data
+
+
+        output_data['今年来'] = rise_data[1].contents[1].text
+        output_data['近1周'] = rise_data[2].contents[1].text
+        output_data['近1月'] = rise_data[3].contents[1].text
+        output_data['近3月'] = rise_data[4].contents[1].text
+        output_data['近6月'] = rise_data[5].contents[1].text
+        output_data['近1年'] = rise_data[6].contents[1].text
+        sum1 = sum1 + float(output_data['近1年'].split('%')[0])
+        output_data['近2年'] = rise_data[7].contents[1].text
+        sum2 = sum2 + float(output_data['近2年'].split('%')[0])
+        output_data['近3年'] = rise_data[8].contents[1].text
+        sum3 = sum3 + float(output_data['近3年'].split('%')[0])
+        output_data['近5年'] = rise_data[9].contents[1].text
+        sum3 = sum3 + float(output_data['近5年'].split('%')[0])
+        
+        
         
 
         # print(output_data)
