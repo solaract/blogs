@@ -1,0 +1,17 @@
+2025-05-08 15:53:12,239 - ERROR - 程序运行失败: Colors must be aRGB hex values
+Traceback (most recent call last):
+  File "d:\学习\blog\fundData\fund_contrast.py", line 290, in <module>
+    processor = FundDataProcessor()
+  File "d:\学习\blog\fundData\fund_contrast.py", line 105, in __init__
+    "background": PatternFill(fill_type="solid", fgColor=Config.COLORS["background"]),
+  File "D:\data\lib\site-packages\openpyxl\styles\fills.py", line 91, in __init__
+    self.fgColor = fgColor
+  File "D:\data\lib\site-packages\openpyxl\styles\colors.py", line 133, in __set__
+    value = Color(rgb=value)
+  File "D:\data\lib\site-packages\openpyxl\styles\colors.py", line 93, in __init__
+    self.rgb = rgb
+  File "D:\data\lib\site-packages\openpyxl\styles\colors.py", line 61, in __set__
+    raise ValueError("Colors must be aRGB hex values")
+ValueError: Colors must be aRGB hex values
+2025-05-08 15:55:19,475 - INFO - 处理完成! 结果保存至: d:\学习\blog\fundData\沪深300被动对比.xlsx
+2025-05-08 16:26:23,813 - INFO - 处理完成! 结果保存至: d:\学习\blog\fundData\沪深300被动对比.xlsx
